@@ -1,0 +1,89 @@
+erDiagram
+    USUARIOS ||..|{ VENTAS : realiza
+    USUARIOS ||..|{ MOVIMIENTOS_INVENTARIO : registra
+    CLIENTES ||..|{ VENTAS : realiza
+    CLIENTES }|..|{ BOLETAS : recibe
+    CATEGORIAS }|..|{ PRODUCTOS : contiene
+    PRODUCTOS ||..|{ DETALLE_VENTAS : vendido_en
+    PRODUCTOS ||..|{ MOVIMIENTOS_INVENTARIO : afecta
+    PROVEEDORES }|..|{ MOVIMIENTOS_INVENTARIO : proviene
+    VENTAS ||..|{ DETALLE_VENTAS : tiene
+    VENTAS ||..|{ BOLETAS : genera
+
+    USUARIOS {
+        int id PK
+        varchar nombre
+        varchar correo
+        varchar hash_contrasena
+        varchar rol
+    }
+    CLIENTES {
+        int id PK
+        varchar nombre
+        varchar apellido
+        varchar correo
+        varchar telefono
+        varchar direccion
+        varchar rut
+        date fecha_registro
+    }
+    CATEGORIAS {
+        int id PK
+        varchar nombre
+        varchar descripcion
+    }
+    PRODUCTOS {
+        varchar sku PK
+        varchar nombre
+        int id_categoria FK
+        varchar talla
+        varchar marca
+        decimal precio_costo
+        decimal precio_venta
+        int stock
+        int stock_minimo
+    }
+    PROVEEDORES {
+        int id PK
+        varchar nombre
+        varchar contacto
+        varchar telefono
+        varchar correo
+        varchar direccion
+    }
+    VENTAS {
+        int id PK
+        int id_usuario FK
+        int id_cliente FK
+        date fecha
+        decimal subtotal
+        decimal iva
+        decimal total
+        varchar estado
+    }
+    DETALLE_VENTAS {
+        int id PK
+        int id_venta FK
+        varchar sku_producto FK
+        int cantidad
+        decimal precio_unitario
+        decimal subtotal
+    }
+    MOVIMIENTOS_INVENTARIO {
+        int id PK
+        varchar sku_producto FK
+        int id_usuario FK
+        int id_proveedor FK
+        char tipo_movimiento  -- E: entrada, S: salida, A: ajuste
+        int cantidad
+        date fecha
+        varchar motivo
+    }
+    BOLETAS {
+        int id PK
+        int id_venta FK
+        varchar numero_correlativo
+        varchar ruta_pdf
+        date fecha_emision
+        varchar enviada_correo  -- S/N
+    }
